@@ -2,5 +2,5 @@
 Nick Barnes (Belt)
 Joseph Leiferman (Floor)
 Charles Carlson (Orders)
-Wangyang Xu (Inventory)
+Wangyang Xu (Inventory)\n
 Di Huang (Master)
