@@ -1,25 +1,31 @@
 package warehouse_system.robot;
 
-import warehouse_system.Report;
+import java.util.ArrayList;
+
 import warehouse_system.Tickable;
 
-public class RobotScheduler implements Tickable, Report{
+public class RobotScheduler implements Tickable{
+	/**
+	 * This works as the robot control subsystem
+	 */
 	
-	public RobotScheduler(){		// you can add parameters for constructor
-		
+	private ArrayList<Robot> robots;
+	
+	public RobotScheduler(){
+		robots = new ArrayList<Robot>();
+	}
+	
+	public RobotScheduler(ArrayList<Robot> robots){
+		this.robots = robots;
 	}
 
 	@Override
-	public void tick(int clk) {
-		printEvent();
-		
+	public void tick(int tick) {
+		robots.forEach(r -> ((Tickable)r).tick(tick));
 	}
 	
-	@Override
-	public void printEvent() {
-		String events = "to print what events are happening";
-		System.out.println("RobotScheduler: " + events);	
-		
+	public void addRobot(Robot r){
+		robots.add(r);
 	}
 
 }

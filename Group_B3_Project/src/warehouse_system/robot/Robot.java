@@ -1,9 +1,9 @@
 package warehouse_system.robot;
 
-public class Robot{
-	
-	public Robot(){		// you can add parameters for constructor
-		
-	}
+import warehouse_system.floor.Floor;
 
+public interface Robot{
+	
+	public static final int size = Floor.gridSize;
+	
 }

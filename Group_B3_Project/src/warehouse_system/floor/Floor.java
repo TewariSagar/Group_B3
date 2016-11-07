@@ -1,25 +1,8 @@
 package warehouse_system.floor;
 
-import warehouse_system.Report;
-import warehouse_system.Tickable;
-
-public class Floor implements Tickable, Report{
+public interface Floor{
 	
-	public Floor(){		// you can add parameters for constructor
-		
-	}
-
-	@Override
-	public void tick(int clk) {
-		printEvent();
-		
-	}
+	public static final int width = 60, height = 30;				// unit: grid
+	public static final int gridSize = 10;							// [10 pixel x 10 pixel] each grid
 	
-	@Override
-	public void printEvent() {
-		String events = "to print what events are happening";
-		System.out.println("Floor: " + events);	
-		
-	}
-
 }

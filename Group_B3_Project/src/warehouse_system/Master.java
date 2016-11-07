@@ -2,80 +2,86 @@ package warehouse_system;
 
 import warehouse_system.belt.Belt;
 import warehouse_system.floor.Floor;
-import warehouse_system.inventory.Inventory;
-import warehouse_system.orders.Orders;
+import warehouse_system.inventory.ItemController;
+import warehouse_system.orders.OrderSystem;
 import warehouse_system.robot.RobotScheduler;
 import warehouse_system.visualizer.Visualizer;
 
-/**
- * Description: 
- * 1. Master starts and continues simulation process
- * 2. we use ticking for simulation, so Master will 
- * publish ticks(clk) to other components
- */
-
 public class Master implements Runnable {
+	/**
+	 * 1. Master starts and continues simulation process
+	 * 2. Ticking Simulation: Master publishes ticks to other components
+	 */
+	private int limit = 100;				// default: limit = 100 ticks
+	private int unitTime = 1000;			// default: 1 second per tick
+	private boolean running = false;
 	
-	private final int limitation = 50;
-
 	private Belt B;
 	private Floor F;
-	private Inventory I;
-	private Orders O;
+	private ItemController I;
+	private OrderSystem O;
 	private RobotScheduler R;
 	private Visualizer V;
 	
-	public Master(){
-		// initializing needed components
-		B = new Belt();
-		F = new Floor();
-		I = new Inventory();
-		O = new Orders();
-		R = new RobotScheduler();
-		V = new Visualizer();
-		
-	}
-	
-	public static void main(String[] args) {
-		// starting simulation
-		new Master().start();
-		
+	public Master(Belt b, Floor f, ItemController i, OrderSystem o, RobotScheduler r, Visualizer v) {
+		B = b;
+		F = f;
+		I = i;
+		O = o;
+		R = r;
+		V = v;
 	}
 
 	@Override
 	public void run() {
-		int clk = 0;
-		while (clk < limitation) {
-			System.out.println(clk + " tick");
-			tick(clk);
+		int tick = 0;
+		while (running && tick < limit) {
+			System.out.println(tick + " tick");
+			tick(tick);
 			System.out.println();
 			
-			unitTime(800);					// 800 milliseconds per tick
+			unitTime();
 			
-			clk++;
+			tick++;
 		}
 
 	}
 	
-	private void start() {
+	public void start() {
+		running = true;
 		new Thread(this).start();
 	}
 	
-	private void tick(int clk){
-		B.tick(clk);
-		F.tick(clk);
-		I.tick(clk);
-		O.tick(clk);
-		R.tick(clk);
-		V.tick(clk);
+	public void stop(){
+		running = false;
 	}
 	
-	private void unitTime(int milliseconds){
+	public void setLimit(int count){
+		limit = count;
+	}
+	
+	public void setUnitTime(int milliseconds){
+		unitTime = milliseconds;
+	}
+	
+	private void unitTime(){
 		try {
-			Thread.sleep(milliseconds);
+			Thread.sleep(unitTime);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * tick(tick) works as a central clock that publishes 
+	 * each tick to other components
+	 */
+	private void tick(int tick){
+		O.tick(tick);
+		I.tick(tick);
+		R.tick(tick);							// updating RobotScheduler to control robots
+		B.tick(tick);
+		V.tick(tick);						    // repainting everything
 	}
 	
 }
