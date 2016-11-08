@@ -13,6 +13,11 @@ import warehouse_system.robot.MockRobot;
 import warehouse_system.robot.RobotScheduler;
 import warehouse_system.visualizer.Visualizer;
 
+/**
+ * 
+ * @author Di Huang
+ *
+ */
 public class TestMaster {
 	
 	@Test
