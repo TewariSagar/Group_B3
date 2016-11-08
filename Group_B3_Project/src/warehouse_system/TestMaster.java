@@ -12,6 +12,7 @@ import warehouse_system.orders.OrderSystem;
 import warehouse_system.robot.MockRobot;
 import warehouse_system.robot.RobotScheduler;
 import warehouse_system.visualizer.Visualizer;
+import warehouse_system.robot.Position;
 
 /**
  * 
@@ -28,8 +29,8 @@ public class TestMaster {
 		Floor F = new MockFloor();
 		
 		RobotScheduler R = new RobotScheduler(F);
-		R.addRobot(new MockRobot("001"));
-		R.addRobot(new MockRobot("002"));
+		R.addRobot(new MockRobot("001"), new Position(0,3), R);
+		R.addRobot(new MockRobot("002"), new Position(3,0), R);
 		
 		ItemController I = new ItemController();
 		I.addItem(new Item("apple", 5, "777"));
