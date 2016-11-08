@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  */
 public class FloorTest {
-	Floor f = new Floor();
+	MockFloor f = new MockFloor();
 	@Test
 	public void test() {
 		// testing getLocation
@@ -37,12 +37,12 @@ public class FloorTest {
 		f.updateObjectLocation("SHELVE_1", notInFloor);
 		assertArrayEquals(notInFloor,f.FLOOR_LOCATIONS.get("SHELVE_1"));
 		//testing get route
-		ArrayList<Floor.Directions> expectedRoute = new ArrayList<>();
+		ArrayList<MockFloor.Directions> expectedRoute = new ArrayList<>();
 		int[] shelve1 = {2,2};
 		int[] charger2 = {3,0};
-		expectedRoute.add(Floor.Directions.UP);
-		expectedRoute.add(Floor.Directions.RIGHT);
-		expectedRoute.add(Floor.Directions.UP);
+		expectedRoute.add(MockFloor.Directions.UP);
+		expectedRoute.add(MockFloor.Directions.RIGHT);
+		expectedRoute.add(MockFloor.Directions.UP);
 		assertEquals(expectedRoute, f.getRoute(shelve1,charger2));
 	}
 	
