@@ -1,13 +1,21 @@
 package warehouse_system.robot;
 
-import warehouse_system.Report;
-import warehouse_system.Tickable;
+import java.util.ArrayList;
 
-public class MockRobot implements Robot, Tickable, Report{
-	
+import warehouse_system.floor.MockFloor.Directions;
+
+
+public class MockRobot implements Robot{
+	/**
+	 * This is just for testing
+	 */
 	public final String ID;
 	public boolean lowBattery = false;
 	public boolean carrying = false;
+	public boolean idle = true;
+	public int x, y;
+	
+	private ArrayList<Directions> route;
 	// add more robot attributes here
 	
 	public MockRobot(String ID){
@@ -15,14 +23,23 @@ public class MockRobot implements Robot, Tickable, Report{
 	}
 
 	@Override
-	public void tick(int tick) {
-		printEvent("it's doing something...");
-		
+	public boolean isIdle() {
+		return idle;
+	}
+	
+	@Override
+	public void setIdle(boolean idle) {
+		this.idle = idle;
 	}
 
 	@Override
-	public void printEvent(String event) {
-		System.out.println("Robot " + ID + ": " + event);
+	public void setRoute(ArrayList<Directions> route) {
+		this.route = route;
 	}
-	
+
+	@Override
+	public String getID() {
+		return ID;
+	}
+
 }

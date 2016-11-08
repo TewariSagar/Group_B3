@@ -27,11 +27,11 @@ public class Visualizer extends JFrame implements Tickable{
 			this.setVisible(true);
 		}
 
-		@Override
-		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.drawLine(0, F.gridSize, width, F.gridSize);
-		}
+//		@Override
+//		protected void paintComponent(Graphics g) {
+//			super.paintComponent(g);
+//			g.drawLine(0, F.gridSize, width, F.gridSize);
+//		}
 		
 	}
 

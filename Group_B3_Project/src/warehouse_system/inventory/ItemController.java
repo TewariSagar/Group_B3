@@ -1,32 +1,32 @@
 package warehouse_system.inventory;
 
-import warehouse_system.Report;
-import warehouse_system.Tickable;
+import java.util.HashMap;
 
-public class ItemController implements Report, Tickable{
+import warehouse_system.Report;
+import warehouse_system.orders.Order;
+
+public class ItemController {
 	/**
 	 * This works as the inventory subsystem
 	 */
-	
-	InventoryDatabase database;
-	
-	public ItemController(){
-		database = new InventoryDatabase();
-	}
-	
-	public ItemController(InventoryDatabase database){
-		this.database = database;
-	}
-	
-	@Override
-	public void printEvent(String event) {
-		System.out.println("ItemController: " + event);	
+	private HashMap<String, Item> inventory;
+
+	public ItemController() {
+		inventory = new HashMap<String, Item>();
 	}
 
-	@Override
-	public void tick(int tick) {
-		printEvent("...");
+	public ItemController(HashMap<String, Item> database) {
+		this.inventory = database;
 	}
 	
+	public void addItem(Item i){
+		inventory.put(i.name, i);
+	}
+
+	public boolean itemAvailable(Order o) {
+		if (!inventory.containsKey(o.name))
+			return false;
+		return inventory.get(o.name).quantity >= o.quantity;
+	}
+
 }
-
