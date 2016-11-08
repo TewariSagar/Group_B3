@@ -34,7 +34,7 @@ public class FloorTest {
 		int[] notInFloor = {0,0};
 		assertEquals(false,f.objectAt(notInFloor));
 		//testing updateShelve
-		f.updateShelve("SHELVE_1", notInFloor);
+		f.updateObjectLocation("SHELVE_1", notInFloor);
 		assertArrayEquals(notInFloor,f.FLOOR_LOCATIONS.get("SHELVE_1"));
 		//testing get route
 		ArrayList<Floor.Directions> expectedRoute = new ArrayList<>();

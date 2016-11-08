@@ -12,11 +12,12 @@ import java.util.Arrays;
 public class Floor {
     public static int[] SHELVE_1 = {2,2}; // (x,y) coordinates location
     public static int[] SHELVE_2 = {3,2}; // (x,y) coordinates location
+    public static int[] ROBOT = {2,2}; // start robot on charger 
     public static final int[] CHARGER_1 = {0,2};
     public static final int[] CHARGER_2 = {0,3}; 
     public static final int[] RECEIVING_DOCK = {5,0};
     public static final int[] PICKER = {1,5};
-    public static final int[] PACKER = {1,2}; 
+    public static final int[] PACKER = {1,2};
     public static final int[][] BELT = {{0,0,0,0,0,0},{0,1,2,3,4,5}}; // entire belt line
     public static final int UPPERB = 5;
     public static final int LOWERB = 0;
@@ -79,7 +80,7 @@ public class Floor {
      * @param location the location of shelf
      * 
      */
-    public void updateShelve(String object, int[] location) { 
+    public void updateObjectLocation(String object, int[] location) { 
         int [] newLocation = FLOOR_LOCATIONS.get(object);
         newLocation = location;
         FLOOR_LOCATIONS.put(object, newLocation);
