@@ -2,83 +2,54 @@ package warehouse_system.robot;
 
 import java.util.ArrayList;
 
-import warehouse_system.Report;
 import warehouse_system.Tickable;
-import warehouse_system.floor.Floor;
-import warehouse_system.orders.Order;
-
-public class RobotScheduler implements Tickable, Report {
+/**
+ * 
+ * @author Wei Gui
+ *
+ */
+public class RobotScheduler implements Tickable{
 	/**
-	 * This works as the robot control subsystem: 1. Creating instances of Robot
-	 * and place them to locations in the warehouse (with Floor); 2. OrderSystem
-	 * would ask it to move a shelf containing the needed items to the picking
-	 * station (with OrderSystem); 3. It can ask ItemController for the location
-	 * of the shelf containing the needed items (with ItemController); 4. It can
-	 * find an available robot and plan a route to the shelf containing the
-	 * needed items (this shelf should be reserved); 5. Floor can provide routes
-	 * for the robot: route 1: from the robot to the shelf containing the needed
-	 * items route 2: from the shelf to the picking station route 3: from the
-	 * picking station to an available place to drop the shelf
+	 * This works as the robot control subsystem
 	 */
-	private ArrayList<Robot> robots;
 	
-	private Floor F;
+	public ArrayList<Robot> robots;//for testing only
 	
-	public RobotScheduler(Floor F) {
-		this.F = F;
+	public RobotScheduler(int Robotnum){
 		robots = new ArrayList<Robot>();
+		for(int a=0;a<Robotnum;a++) {
+			addRobot(new MockRobot(Integer.toString(a),new Position(0,0),this));
+		}
 	}
-
-	public RobotScheduler(ArrayList<Robot> robots) {
+	
+	public RobotScheduler(ArrayList<Robot> robots){
 		this.robots = robots;
-		// place robots to locations in the warehouse
-		robots.forEach(r -> F.placeRobot(r));
-		// report placement event
-	}
-
-	public void addRobot(Robot r) {
-		robots.add(r);
-		// place the robot to locations in the warehouse
-		F.placeRobot(r);
-		// report placement event
 	}
 
 	@Override
 	public void tick(int tick) {
-		robots.forEach(r -> F.placeRobot(r));
+		robots.forEach(r -> ((Tickable)r).tick(tick));
 	}
-
-	public Robot finaAvailableRobot() {
-		for (Robot r : robots){
-			if (r.isIdle()){
-				r.setIdle(false);
-				return r;
+	
+	public void addRobot(Robot r){
+		robots.add(r);
+	}
+	public Robot getAvailableRobot() {
+		for(Robot r:robots) {
+			if(((MockRobot)r).isBusy()==false) {
+				return (Robot)r;
 			}
 		}
-		printEvent("There's no robot available right now.");
+		//All Robots are busy now
 		return null;
 	}
-
-	public boolean fromRobotToShelf(Order o) {
-		Robot r = finaAvailableRobot();
-		if (r.equals(null))
-			return false;
-		// plan a route for the robot from itself location to the shelf
-		printEvent("robot " + r.getID() + " is going to find the shelf containing " + o.name);
-		return true;
-	}
-	
-	public void fromShelfToPick(Robot r){
-		// plan a route for the robot from the shelf to picking station
-	}
-	
-	public void fromPickToShelf(Robot r){
-		// plan a route for the robot from picking station to the shelf (which is reserved)
-	}
-
-	@Override
-	public void printEvent(String event) {
-		System.out.println("RobotScheduler: " + event);
+	public boolean collisioncheck(Position p) {
+		for(Robot r:robots) {
+			if(((MockRobot)r).getPOS().getx()==p.getx()&&((MockRobot)r).getPOS().gety()==p.gety()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
