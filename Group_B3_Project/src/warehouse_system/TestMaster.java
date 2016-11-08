@@ -5,8 +5,9 @@ import org.junit.Test;
 import warehouse_system.belt.Belt;
 import warehouse_system.floor.Floor;
 import warehouse_system.floor.MockFloor;
+import warehouse_system.inventory.Item;
 import warehouse_system.inventory.ItemController;
-import warehouse_system.orders.MockOrder;
+import warehouse_system.orders.Order;
 import warehouse_system.orders.OrderSystem;
 import warehouse_system.robot.MockRobot;
 import warehouse_system.robot.RobotScheduler;
@@ -21,15 +22,17 @@ public class TestMaster {
 		
 		Floor F = new MockFloor();
 		
-		ItemController I = new ItemController();
-		
-		OrderSystem O = new OrderSystem();
-		O.enqueue(new MockOrder("0x01", "Clinton St"));
-		O.enqueue(new MockOrder("0x02", "Johnson St"));
-		
-		RobotScheduler R = new RobotScheduler();
+		RobotScheduler R = new RobotScheduler(F);
 		R.addRobot(new MockRobot("001"));
 		R.addRobot(new MockRobot("002"));
+		
+		ItemController I = new ItemController();
+		I.addItem(new Item("apple", 5, "777"));
+		I.addItem(new Item("banana", 5, "778"));
+		
+		OrderSystem O = new OrderSystem(I, R);
+		O.enqueue(new Order("0x01", "apple", 1, "Clinton St"));
+		O.enqueue(new Order("0x02", "banana", 2, "Johnson St"));
 		
 		Visualizer V = new Visualizer(F);
 		
