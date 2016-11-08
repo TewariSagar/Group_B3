@@ -88,13 +88,13 @@ public class Floor {
      * 
      * @param start start location of a given object
      * @param end end destination
-     * @return ArrayList<Directions> returns a route from start to end of type Directions ex [LEFT,RIGHT,UP,DOWN,DOWN]
+     * @return ArrayList<> returns a route from start to end of type Directions ex [LEFT,RIGHT,UP,DOWN,DOWN]
      */ 
     public ArrayList<Directions> getRoute(int[] start, int[] end) {
         ArrayList<Directions> route = new ArrayList<>();
         int[] currentLocation = start.clone();
         // alternator will alternate between odd and even so that the robot will move
-        // in either the x or y direction untill it is in line with either the x or y
+        // in either the x or y direction until it is in line with either the x or y
         int alternator = 0;
         // will create a route until object is at final location
         while(currentLocation[0]!= end[0] || currentLocation[1] != end[1]) {
