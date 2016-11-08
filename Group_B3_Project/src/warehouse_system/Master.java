@@ -7,13 +7,18 @@ import warehouse_system.orders.OrderSystem;
 import warehouse_system.robot.RobotScheduler;
 import warehouse_system.visualizer.Visualizer;
 
+/**
+ * 
+ * @author Di Huang
+ *
+ */
 public class Master implements Runnable {
 	/**
 	 * 1. Master starts and continues simulation process
 	 * 2. Ticking Simulation: Master publishes ticks to other components
 	 */
 	private int limit = 100;				// default: limit = 100 ticks
-	private int unitTime = 1000;			// default: 1 second per tick
+	private int unitTime = 1000;				// default: 1 second per tick
 	private boolean running = false;
 	
 	private Belt B;
@@ -81,7 +86,7 @@ public class Master implements Runnable {
 	private void tick(int tick){
 		O.tick(tick);							// getting orders
 		R.tick(tick);							// updating RobotScheduler to control robots
-		V.tick(tick);						    // repainting everything
+		V.tick(tick);						    	// repainting everything
 	}
 	
 }
