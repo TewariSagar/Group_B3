@@ -80,6 +80,16 @@ public class MockFloor implements Floor {
         newLocation = location;
         FLOOR_LOCATIONS.put(object, newLocation);
     }
+    /**
+     * will be called when the floor is first initialized so that we can choose where the robot begins 
+     * for example on a charge or at the dock
+     * <p>
+     * @param l location to place the robot to start with
+     */
+    public void placeRobot(int[] l) {
+    	ROBOT = l;
+    	updateObjectLocation("ROBOT",l);
+    }
     /** 
      * 
      * @param start start location of a given object

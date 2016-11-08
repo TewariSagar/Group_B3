@@ -8,4 +8,5 @@ public interface Floor {
 	public boolean objectAt(int[] l);
 	public void updateObjectLocation(String object, int[] location);
 	public ArrayList<MockFloor.Directions> getRoute(int[] start, int[] end);
+	public void placeRobot(int[] l);
 }
