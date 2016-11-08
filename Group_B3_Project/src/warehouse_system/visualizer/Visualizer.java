@@ -47,11 +47,11 @@ public class Visualizer extends JFrame implements Tickable{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		this.setSize(WIDTH, HEIGHT);
-        this.setLocationRelativeTo(null);
+        	this.setLocationRelativeTo(null);
         
-        this.setLayout(null);
-        Screen screen = new Screen();
-        this.add(screen);
+		this.setLayout(null);
+		Screen screen = new Screen();
+		this.add(screen);
 		this.setVisible(true);
 	}
 
