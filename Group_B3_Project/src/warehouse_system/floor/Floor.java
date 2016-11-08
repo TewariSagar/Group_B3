@@ -88,7 +88,7 @@ public class Floor {
      * 
      * @param start start location of a given object
      * @param end end destination
-     * @return ArrayList<> returns a route from start to end of type Directions ex [LEFT,RIGHT,UP,DOWN,DOWN]
+     * @return ArrayList returns a route from start to end of type Directions ex [LEFT,RIGHT,UP,DOWN,DOWN]
      */ 
     public ArrayList<Directions> getRoute(int[] start, int[] end) {
         ArrayList<Directions> route = new ArrayList<>();
