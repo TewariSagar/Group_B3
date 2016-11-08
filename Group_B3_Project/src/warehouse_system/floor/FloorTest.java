@@ -11,6 +11,8 @@ import java.util.ArrayList;
  */
 public class FloorTest {
 	MockFloor f = new MockFloor();
+	Point p = new Point(2,5);
+	
 	@Test
 	public void test() {
 		// testing getLocation
@@ -44,6 +46,14 @@ public class FloorTest {
 		expectedRoute.add(MockFloor.Directions.RIGHT);
 		expectedRoute.add(MockFloor.Directions.UP);
 		assertEquals(expectedRoute, f.getRoute(shelve1,charger2));
+		
+		//testing Point class
+		int [] t1 = p.getPoint();
+		int[] tt1 = {2,5};
+		assertArrayEquals(tt1,t1);
+		p.setPoint(5,2);
+		int[] tt2 = {5,2};
+		assertArrayEquals(tt2,p.getPoint());
 	}
 	
 
