@@ -1,6 +1,6 @@
 import java.util.*;
 
-//will work with orders
+//will work with orders!
 
 public class Bin extends Belt {
     //for binList, 0 is starting position, 19 is last position
