@@ -16,7 +16,6 @@ public class OrderControl implements Tickable {
 	private LinkedList<Order> orderQueue;
 	private ItemController itemController;
 	private RobotScheduler robotScheduler;
-	private int delay = 3;
 	
 
 	/**
@@ -27,9 +26,8 @@ public class OrderControl implements Tickable {
 	 * @param itemController
 	 * @param robotScheduler
 	 */
-	public OrderControl(ItemController itemController, RobotScheduler robotScheduler) {
+	public OrderControl(ItemController itemController) {
 		this.itemController = itemController;
-		this.robotScheduler = robotScheduler;
 	}
 	
 	/**
@@ -38,7 +36,7 @@ public class OrderControl implements Tickable {
 	 * @author charlesc3929
 	 * @param orderToBeAdded
 	 */
-	public void addOrder(Order orderToBeAdded) {
+	public void addOrder(_Order orderToBeAdded) {
 		orderQueue.add(orderToBeAdded);
 	}
 
@@ -54,15 +52,8 @@ public class OrderControl implements Tickable {
 			orderQueue.poll();
 		}
 		else {
-			System.out.println("There are no orders at the moment");
+			System.out.println("There are no orders");
 			orderQueue.poll();
 		}
-			
-		
 	}
-	
-	
-	
-	
-	
 }
