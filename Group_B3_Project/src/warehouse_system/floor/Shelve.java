@@ -5,13 +5,11 @@ import java.util.HashMap;
  * @author josephtleiferman
  *
  */
-public class Shelve {
+public class Shelve extends wareHouseLocation {
 	private HashMap<String,Item> itemsOnShelves = new HashMap<>();
 	private Point location; 
 	
-	public Shelve(Point p) {
-		location = p;
-	}
+
 	public Point getLocation() {
 		return location;
 	}
