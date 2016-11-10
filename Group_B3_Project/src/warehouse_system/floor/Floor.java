@@ -1,12 +1,16 @@
 package warehouse_system.floor;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author josephtleiferman
+ *
+ */
 public interface Floor {
 	
-	public int[] getLocation(String l);
-	public boolean objectAt(int[] l);
-	public void updateObjectLocation(String object, int[] location);
-	public ArrayList<MockFloor.Directions> getRoute(int[] start, int[] end);
-	public void placeRobot(int[] l);
+	public Point getLocation(String l);
+	public boolean objectAt(Point l);
+	public void updateObjectLocation(String object, Point location);
+	public ArrayList<MockFloor.Directions> getRoute(Point start, Point end);
+	public void placeRobot(Point l);
 }

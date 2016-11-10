@@ -15,16 +15,24 @@ public class FloorTest {
 	
 	@Test
 	public void test() {
+		//testing Point class
+		int [] t1 = p.getPoint();
+		int[] tt1 = {2,5};
+		assertArrayEquals(tt1,t1);
+		p.setPoint(5,2);
+		int[] tt2 = {5,2};
+		assertArrayEquals(tt2,p.getPoint());
+		
 		// testing getLocation
 		String tester = "SHELVE_1";
-		int[] expected = {2,2};
-		int[] got  = f.getLocation(tester);
-		assertArrayEquals(expected,got);
+		Point expected = new Point(2,2);
+		Point got  = f.getLocation(tester);
+		assertArrayEquals(expected.getPoint(),got.getPoint());
 		//testing getLocation
-		int[] expected1 = {1,5};
+		Point expected1 = new Point(1,5);
 		tester = "PICKER";
 		got = f.getLocation(tester);
-		assertArrayEquals(expected1 ,got);
+		assertArrayEquals(expected1.getPoint() ,got.getPoint());
 		// testing objectAt
 		boolean got1 = f.objectAt(expected);
 		assertEquals(true,got1);
@@ -33,27 +41,21 @@ public class FloorTest {
 		//testing objectAt
 		assertEquals(true,got1);
 		//testing objectAt
-		int[] notInFloor = {0,0};
+		Point notInFloor = new Point(0,0);
 		assertEquals(false,f.objectAt(notInFloor));
 		//testing updateShelve
 		f.updateObjectLocation("SHELVE_1", notInFloor);
-		assertArrayEquals(notInFloor,f.FLOOR_LOCATIONS.get("SHELVE_1"));
+		assertEquals(notInFloor,f.FLOOR_LOCATIONS.get("SHELVE_1"));
 		//testing get route
 		ArrayList<MockFloor.Directions> expectedRoute = new ArrayList<>();
-		int[] shelve1 = {2,2};
-		int[] charger2 = {3,0};
-		expectedRoute.add(MockFloor.Directions.UP);
+		Point shelve1 = new Point(2,2);
+		Point charger2 = new Point(3,0);
 		expectedRoute.add(MockFloor.Directions.RIGHT);
+		expectedRoute.add(MockFloor.Directions.UP);
 		expectedRoute.add(MockFloor.Directions.UP);
 		assertEquals(expectedRoute, f.getRoute(shelve1,charger2));
 		
-		//testing Point class
-		int [] t1 = p.getPoint();
-		int[] tt1 = {2,5};
-		assertArrayEquals(tt1,t1);
-		p.setPoint(5,2);
-		int[] tt2 = {5,2};
-		assertArrayEquals(tt2,p.getPoint());
+		
 	}
 	
 
