@@ -1,5 +1,9 @@
 package warehouse_system.orders;
 
+
+/**
+* named _Order to differentiate from Order for now
+*/
 public class _Order {
 	
     public final String serial;
