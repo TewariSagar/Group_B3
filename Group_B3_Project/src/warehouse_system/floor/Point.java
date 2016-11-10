@@ -8,10 +8,12 @@ public class Point {
 	
 	private int x;
 	private int y;
+	private String name;
 	
-	public Point(int x, int y) {
+	public Point(int x, int y, String name) {
 		this.x = x;
 		this.y = y;
+		this.name = name;
 		
 	}
 	/**
@@ -30,5 +32,14 @@ public class Point {
 	public int[] getPoint() {
 		int[] point = {this.x,this.y};
 		return point;
+	}
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
+	}
+	public String getName() {
+		return name;
 	}
 }

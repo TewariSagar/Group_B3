@@ -9,14 +9,14 @@ import java.util.HashMap;
  *
  */
 public class MockFloor implements Floor {
-	public static Point SHELVE_1 = new Point(2,2); // (x,y) coordinates location
-    public static Point SHELVE_2 = new Point(3,2); // (x,y) coordinates location
-    public static Point ROBOT = new Point(2,0); // start robot on charger 
-    public static final Point CHARGER_1 = new Point(2,0);
-    public static final Point CHARGER_2 = new Point(3,0); 
-    public static final Point RECEIVING_DOCK = new Point(5,0);
-    public static final Point PICKER = new Point(1,5);
-    public static final Point PACKER = new Point(1,2);
+	public static Point SHELVE_1 = new Point(2,2,"SHELVE_1"); // (x,y) coordinates location
+    public static Point SHELVE_2 = new Point(3,2,"SHELVE_2"); // (x,y) coordinates location
+    public static Point ROBOT = new Point(2,0,"ROBOT"); // start robot on charger 
+    public static final Point CHARGER_1 = new Point(2,0,"CHARGER_1");
+    public static final Point CHARGER_2 = new Point(3,0,"CHARGER_2"); 
+    public static final Point RECEIVING_DOCK = new Point(5,0,"RECEIVING_DOCK");
+    public static final Point PICKER = new Point(1,5,"PICKER");
+    public static final Point PACKER = new Point(1,2,"PACKER");
     public static final int[][] BELT = {{0,0,0,0,0,0},{0,1,2,3,4,5}}; // entire belt line
     public static final int UPPERB = 5;
     public static final int LOWERB = 0;
@@ -48,7 +48,7 @@ public class MockFloor implements Floor {
         
     }
     /**
-     *Given a string l getLocation(String l) will rerturn an int[] 
+     *Given a string l getLocation(String l) will return a Point 
      *storing the location of that object or null if not a valid object
      *<p>
      *
@@ -59,7 +59,7 @@ public class MockFloor implements Floor {
         return FLOOR_LOCATIONS.get(l);
     }
      /** 
-      * return true or false depending on if an object is at location [x,y]
+      * return true or false depending on if an object is at location [x,y] in Point 
       * <p>
       * @param l a Point [x,y] of objects location  
       * @return boolean whether an object is at a given [x,y]
@@ -67,7 +67,7 @@ public class MockFloor implements Floor {
     public boolean objectAt(Point l) {
         
         for(Point x: FLOOR_LOCATIONS.values() ) {
-            if(x.getPoint()[0] == l.getPoint()[0] && x.getPoint()[1]==l.getPoint()[1]) {
+            if(x.getX() == l.getX() && x.getY()== l.getY()) {
                 return true;
             }
         }
@@ -102,48 +102,50 @@ public class MockFloor implements Floor {
      */ 
     public ArrayList<Directions> getRoute(Point start, Point end) {
         ArrayList<Directions> route = new ArrayList<>();
-        Point currentLocation = new Point(start.getPoint()[0],start.getPoint()[1]);
+        Point currentLocation = new Point(start.getX(),start.getY(),"currentLocation");
         // alternator will alternate between odd and even so that the robot will move
         // in either the x or y direction until it is in line with either the x or y
         int alternator = 0;
         // will create a route until object is at final location
-        while(currentLocation.getPoint()[0]!= end.getPoint()[0] || currentLocation.getPoint()[1] != end.getPoint()[1]) {
+        while(currentLocation.getX()!= end.getX() || currentLocation.getY() != end.getY()) {
             
-            if(alternator%2==0 && currentLocation.getPoint()[0] != end.getPoint()[0]) {
+            if(alternator%2==0 && currentLocation.getX() != end.getX()) {
                 // find whether moving left or right will get object closer to destination
-                int diff1 = Math.abs(currentLocation.getPoint()[0]+1 - end.getPoint()[0]);
-                int diff2 = Math.abs(currentLocation.getPoint()[0]-1 - end.getPoint()[0]);
-                Point tempLocation = new Point(currentLocation.getPoint()[0],currentLocation.getPoint()[1]);
+                int diff1 = Math.abs(currentLocation.getX()+1 - end.getX());
+                int diff2 = Math.abs(currentLocation.getX()-1 - end.getX());
+                Point tempLocation = new Point(currentLocation.getX(),currentLocation.getY(),"tempLocation");
                 if(diff1<diff2) {
-                    tempLocation.getPoint()[0]+=1; 
-                    if(tempLocation.getPoint()[0]<UPPERB) {
-                        currentLocation.setPoint(currentLocation.getPoint()[0]+1,currentLocation.getPoint()[1]);
+                    tempLocation.setPoint(tempLocation.getX()+1, tempLocation.getY()); 
+                    if(tempLocation.getX()<UPPERB) {
+                        currentLocation.setPoint(currentLocation.getX()+1,currentLocation.getY());
                         route.add(Directions.RIGHT);
                     }
                 }
                 else {
-                    tempLocation.getPoint()[0]-= 1;
-                    if( tempLocation.getPoint()[0]>LOWERB ) {
-                    	currentLocation.setPoint(currentLocation.getPoint()[0]-1,currentLocation.getPoint()[1]);
+                	tempLocation.setPoint(tempLocation.getX()-1, tempLocation.getY());
+                    
+                    if( tempLocation.getX()>LOWERB ) {
+                    	currentLocation.setPoint(currentLocation.getX()-1,currentLocation.getY());
                         route.add(Directions.LEFT);
                     }
                 }
-            }else if(alternator%2==1 && currentLocation.getPoint()[1] != end.getPoint()[1]) {
+            }else if(alternator%2==1 && currentLocation.getY() != end.getY()) {
                 // find whether moving up or down will get object closer to destination
-                int diff1 = Math.abs(currentLocation.getPoint()[1]+1 - end.getPoint()[1]);
-                int diff2 = Math.abs(currentLocation.getPoint()[1]-1 - end.getPoint()[1]);
-                Point tempLocation = new Point(currentLocation.getPoint()[0],currentLocation.getPoint()[1]);
+                int diff1 = Math.abs(currentLocation.getY()+1 - end.getY());
+                int diff2 = Math.abs(currentLocation.getY()-1 - end.getY());
+                Point tempLocation = new Point(currentLocation.getX(),currentLocation.getY(),"tempLocation");
                 if(diff1<diff2) {
-                    tempLocation.getPoint()[1]+=1;
-                    if( tempLocation.getPoint()[1]>LOWERB) {
-                    	currentLocation.setPoint(currentLocation.getPoint()[0],currentLocation.getPoint()[1]+1);
+                	tempLocation.setPoint(tempLocation.getX(), tempLocation.getY()+1);
+                    
+                    if( tempLocation.getY()>LOWERB) {
+                    	currentLocation.setPoint(currentLocation.getX(),currentLocation.getY()+1);
                         route.add(Directions.DOWN);
                     }
                 }
                 else {
-                    tempLocation.getPoint()[1]-=1;
-                    if( tempLocation.getPoint()[1]<UPPERB) {
-                    	currentLocation.setPoint(currentLocation.getPoint()[0],currentLocation.getPoint()[1]-1);
+                	tempLocation.setPoint(tempLocation.getX(), tempLocation.getY()-1);
+                    if( tempLocation.getY()<UPPERB) {
+                    	currentLocation.setPoint(currentLocation.getX(),currentLocation.getY()-1);
                         route.add(Directions.UP);
                     }
                 }
