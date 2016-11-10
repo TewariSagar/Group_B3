@@ -14,7 +14,7 @@ public class Bin extends Belt {
     public Bin(){
     	 order.put(Belt.orderNum, 322);
     }
-    
+    //11ss
     //this is where orders will be saved to a bin, will need to wait
     //for integration otherwise I am not too sure how to do that
 }

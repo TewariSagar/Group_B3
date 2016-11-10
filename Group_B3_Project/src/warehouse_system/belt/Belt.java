@@ -27,7 +27,7 @@ public class Belt implements Tickable, Report{
     	
     }
     
-    //comment 
+    //comment !!!
     public int getSpeed(){
     	return speed;
     }
