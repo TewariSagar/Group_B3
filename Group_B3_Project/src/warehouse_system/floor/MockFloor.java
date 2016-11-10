@@ -1,24 +1,22 @@
 package warehouse_system.floor;
 
-import java.util.HashMap;
-
-import warehouse_system.robot.Robot;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 /**
- *
+ * 
  * @author josephtleiferman
+ *
  */
-
-public class MockFloor implements Floor{
-    public static int[] SHELVE_1 = {2,2}; // (x,y) coordinates location
-    public static int[] SHELVE_2 = {3,2}; // (x,y) coordinates location
-    public static final int[] CHARGER_1 = {0,2};
-    public static final int[] CHARGER_2 = {0,3}; 
-    public static final int[] RECEIVING_DOCK = {5,0};
-    public static final int[] PICKER = {1,5};
-    public static final int[] PACKER = {1,2}; 
+public class MockFloor implements Floor {
+	public static Point SHELVE_1 = new Point(2,2,"SHELVE_1"); // (x,y) coordinates location
+    public static Point SHELVE_2 = new Point(3,2,"SHELVE_2"); // (x,y) coordinates location
+    public static Point ROBOT = new Point(2,0,"ROBOT"); // start robot on charger 
+    public static final Point CHARGER_1 = new Point(2,0,"CHARGER_1");
+    public static final Point CHARGER_2 = new Point(3,0,"CHARGER_2"); 
+    public static final Point RECEIVING_DOCK = new Point(5,0,"RECEIVING_DOCK");
+    public static final Point PICKER = new Point(1,5,"PICKER");
+    public static final Point PACKER = new Point(1,2,"PACKER");
     public static final int[][] BELT = {{0,0,0,0,0,0},{0,1,2,3,4,5}}; // entire belt line
     public static final int UPPERB = 5;
     public static final int LOWERB = 0;
@@ -34,7 +32,7 @@ public class MockFloor implements Floor{
     public enum Directions {
         UP,DOWN,LEFT,RIGHT
     }
-    HashMap<String,int[]> FLOOR_LOCATIONS = new HashMap<>();
+    HashMap<String,Point> FLOOR_LOCATIONS = new HashMap<>();
     
     // initially just statically create these objects
     public MockFloor() {
@@ -50,26 +48,26 @@ public class MockFloor implements Floor{
         
     }
     /**
-     *Given a string l getLocation(String l) will rerturn an int[] 
+     *Given a string l getLocation(String l) will return a Point 
      *storing the location of that object or null if not a valid object
      *<p>
      *
      *@param l string containing locations name 
-     *@return int[] location of the object (x,y)
+     *@return Point location of the object (x,y)
      */
-    public int[] getLocation(String l) {
+    public Point getLocation(String l) {
         return FLOOR_LOCATIONS.get(l);
     }
      /** 
-      * return true or false depending on if an object is at location [x,y]
+      * return true or false depending on if an object is at location [x,y] in Point 
       * <p>
-      * @param l an int[] [x,y] of objects location  
+      * @param l a Point [x,y] of objects location  
       * @return boolean whether an object is at a given [x,y]
       */
-    public boolean objectAt(int[] l) {
+    public boolean objectAt(Point l) {
         
-        for(int[] x: FLOOR_LOCATIONS.values() ) {
-            if(x[0] == l[0] && x[1]==l[1]) {
+        for(Point x: FLOOR_LOCATIONS.values() ) {
+            if(x.getX() == l.getX() && x.getY()== l.getY()) {
                 return true;
             }
         }
@@ -81,76 +79,82 @@ public class MockFloor implements Floor{
      * @param location the location of shelf
      * 
      */
-    public void updateShelve(String object, int[] location) { 
-        int [] newLocation = FLOOR_LOCATIONS.get(object);
+    public void updateObjectLocation(String object, Point location) { 
+        Point newLocation = FLOOR_LOCATIONS.get(object);
         newLocation = location;
         FLOOR_LOCATIONS.put(object, newLocation);
+    }
+    /**
+     * will be called when the floor is first initialized so that we can choose where the robot begins 
+     * for example on a charge or at the dock
+     * <p>
+     * @param l location to place the robot to start with
+     */
+    public void placeRobot(Point l) {
+    	ROBOT = l;
+    	updateObjectLocation("ROBOT",l);
     }
     /** 
      * 
      * @param start start location of a given object
      * @param end end destination
-     * @return ArrayList<Directions> returns a route from start to end of type Directions ex [LEFT,RIGHT,UP,DOWN,DOWN]
+     * @return ArrayList returns a route from start to end of type Directions ex [LEFT,RIGHT,UP,DOWN,DOWN]
      */ 
-    public ArrayList<Directions> getRoute(int[] start, int[] end) {
+    public ArrayList<Directions> getRoute(Point start, Point end) {
         ArrayList<Directions> route = new ArrayList<>();
-        int[] currentLocation = start.clone();
+        Point currentLocation = new Point(start.getX(),start.getY(),"currentLocation");
         // alternator will alternate between odd and even so that the robot will move
-        // in either the x or y direction untill it is in line with either the x or y
+        // in either the x or y direction until it is in line with either the x or y
         int alternator = 0;
-        // will creat a route until object is at final location
-        while(currentLocation[0]!= end[0] || currentLocation[1] != end[1]) {
+        // will create a route until object is at final location
+        while(currentLocation.getX()!= end.getX() || currentLocation.getY() != end.getY()) {
             
-            if(alternator%2==0 && currentLocation[0] != end[0]) {
+            if(alternator%2==0 && currentLocation.getX() != end.getX()) {
                 // find whether moving left or right will get object closer to destination
-                int diff1 = Math.abs(currentLocation[0]+1 - end[0]);
-                int diff2 = Math.abs(currentLocation[0]-1 - end[0]);
-                int[] tempLocation = currentLocation.clone();
+                int diff1 = Math.abs(currentLocation.getX()+1 - end.getX());
+                int diff2 = Math.abs(currentLocation.getX()-1 - end.getX());
+                Point tempLocation = new Point(currentLocation.getX(),currentLocation.getY(),"tempLocation");
                 if(diff1<diff2) {
-                    tempLocation[0]+=1; 
-                    if(!objectAt(tempLocation) && tempLocation[0]<UPPERB) {
-                        currentLocation[0]+= 1;
+                    tempLocation.setPoint(tempLocation.getX()+1, tempLocation.getY()); 
+                    if(tempLocation.getX()<UPPERB) {
+                        currentLocation.setPoint(currentLocation.getX()+1,currentLocation.getY());
                         route.add(Directions.RIGHT);
                     }
                 }
                 else {
-                    tempLocation[0]-= 1;
-                    if(!objectAt(tempLocation) && tempLocation[0]>LOWERB ) {
-                        currentLocation[0]-= 1;
+                	tempLocation.setPoint(tempLocation.getX()-1, tempLocation.getY());
+                    
+                    if( tempLocation.getX()>LOWERB ) {
+                    	currentLocation.setPoint(currentLocation.getX()-1,currentLocation.getY());
                         route.add(Directions.LEFT);
                     }
                 }
-            }else if(alternator%2==1 && currentLocation[1] != end[1]) {
+            }else if(alternator%2==1 && currentLocation.getY() != end.getY()) {
                 // find whether moving up or down will get object closer to destination
-                int diff1 = Math.abs(currentLocation[1]+1 - end[1]);
-                int diff2 = Math.abs(currentLocation[1]-1 - end[1]);
-                int[] tempLocation = currentLocation.clone();
+                int diff1 = Math.abs(currentLocation.getY()+1 - end.getY());
+                int diff2 = Math.abs(currentLocation.getY()-1 - end.getY());
+                Point tempLocation = new Point(currentLocation.getX(),currentLocation.getY(),"tempLocation");
                 if(diff1<diff2) {
-                    tempLocation[1]+=1;
-                    if(!objectAt(tempLocation) && tempLocation[1]>LOWERB) {
-                        currentLocation[1]+= 1;
+                	tempLocation.setPoint(tempLocation.getX(), tempLocation.getY()+1);
+                    
+                    if( tempLocation.getY()>LOWERB) {
+                    	currentLocation.setPoint(currentLocation.getX(),currentLocation.getY()+1);
                         route.add(Directions.DOWN);
                     }
                 }
                 else {
-                    tempLocation[1]-=1;
-                    if(!objectAt(currentLocation) && tempLocation[1]<UPPERB) {
-                        currentLocation[1]-= 1;
+                	tempLocation.setPoint(tempLocation.getX(), tempLocation.getY()-1);
+                    if( tempLocation.getY()<UPPERB) {
+                    	currentLocation.setPoint(currentLocation.getX(),currentLocation.getY()-1);
                         route.add(Directions.UP);
                     }
                 }
             }
-            System.out.println(Arrays.toString(currentLocation));
-            
+            System.out.println(Arrays.toString(currentLocation.getPoint()));
+            System.out.println(Arrays.toString(route.toArray()));
             alternator +=1;
         }
         return route;
         
     }
-    
-    @Override
-	public void placeRobot(Robot r) {
-		
-	}
-    
 }
