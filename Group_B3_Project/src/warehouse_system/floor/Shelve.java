@@ -6,9 +6,13 @@ import java.util.HashMap;
  *
  */
 public class Shelve extends wareHouseLocation {
+	
 	private HashMap<String,Item> itemsOnShelves = new HashMap<>();
 	private Point location; 
-	
+	public Shelve(Point p) {
+		super(p);
+		
+	}
 
 	public Point getLocation() {
 		return location;
